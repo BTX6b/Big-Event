@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
+import { userGetInfoService } from '@/api/user.js'
 export const useUserStore = defineStore(
   'user',
   () => {
@@ -10,11 +11,22 @@ export const useUserStore = defineStore(
     const removeToken = () => {
       token.value = ''
     }
-
+    const user = ref({})
+    const getUser = async () => {
+      //获取用户基本信息
+      const res = await userGetInfoService()
+      user.value = res.data.data
+    }
+    const setUser = (newUser) => {
+      user.value = newUser
+    }
     return {
       token,
       setToken,
-      removeToken
+      removeToken,
+      getUser,
+      user,
+      setUser
     }
   },
   {
